@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_post_like",schema = "public", catalog = "vakomtrainee")
+@Table(name = "user_post_like", schema = "public", catalog = "vakomtrainee")
 public class Like {
 
     @Id

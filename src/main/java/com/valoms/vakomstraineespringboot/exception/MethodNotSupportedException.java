@@ -1,6 +1,6 @@
 package com.valoms.vakomstraineespringboot.exception;
 
-public class MethodNotSupportedException extends RuntimeException{
+public class MethodNotSupportedException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private static final String METHOD_NOT_SUPPORTED = "Method not supported";

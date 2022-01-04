@@ -21,17 +21,17 @@ public class PostController {
     }
 
     @GetMapping("all")
-    public List<ResponseEntity<PostProfileResponse>> getAllPost(){
+    public List<ResponseEntity<PostProfileResponse>> getAllPost() {
         return null;
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PostProfileResponse> getPost(@PathVariable("id") Long id){
+    public ResponseEntity<PostProfileResponse> getPost(@PathVariable("id") Long id) {
         return null;
     }
 
     @PostMapping("")
-    public ResponseEntity<PostProfileResponse> createPost(@RequestBody PostCreateRequest postCreateRequest){
+    public ResponseEntity<PostProfileResponse> createPost(@RequestBody PostCreateRequest postCreateRequest) {
         return postService.create(postCreateRequest);
     }
 }

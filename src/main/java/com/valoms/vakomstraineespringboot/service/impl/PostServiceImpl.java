@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
@@ -28,9 +26,7 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<PostProfileResponse> create(PostCreateRequest postCreateRequest) {
 
         Post post = new Post();
-        BeanUtils.copyProperties(postCreateRequest,post);
-        System.out.println(post.getId());
-        System.out.println(post.getLocation());
+        BeanUtils.copyProperties(postCreateRequest, post);
         postRepository.save(post);
         return ResponseEntity.ok(null);
     }

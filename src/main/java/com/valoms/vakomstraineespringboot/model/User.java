@@ -42,7 +42,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "sex_enum")
-    @Type( type = "pgsql_enum" )
+    @Type(type = "pgsql_enum")
     private SexEnum sex;
 
     @Column
