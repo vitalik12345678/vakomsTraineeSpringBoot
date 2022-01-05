@@ -9,9 +9,9 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationJSON implements Serializable {
+public class LocationJSON extends Throwable implements Serializable {
 
-    private final static long serialVersionUID = 7702L;
+    private static final long serialVersionUID = 7702L;
 
     private String longitude;
     private String latitude;

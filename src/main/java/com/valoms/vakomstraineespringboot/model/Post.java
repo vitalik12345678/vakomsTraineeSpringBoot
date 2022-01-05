@@ -1,14 +1,21 @@
 package com.valoms.vakomstraineespringboot.model;
 
+
+
+import com.valoms.vakomstraineespringboot.type.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
+@TypeDef(name = "JsonType",typeClass = JsonType.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,6 +31,7 @@ public class Post {
     private String title;
 
     @Column
+    @Type(type = "JsonType")
     private LocationJSON location;
 
     @Column
