@@ -1,5 +1,6 @@
 package com.valoms.vakomstraineespringboot.model;
 
+import com.valoms.vakomstraineespringboot.model.mapper.Convertable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "comments", schema = "public", catalog = "vakomtrainee")
-public class Comment {
+public class Comment implements Convertable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

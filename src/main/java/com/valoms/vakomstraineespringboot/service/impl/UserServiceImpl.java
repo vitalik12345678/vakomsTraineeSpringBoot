@@ -6,6 +6,7 @@ import com.valoms.vakomstraineespringboot.dto.user.UserUpdateRequest;
 import com.valoms.vakomstraineespringboot.exception.ExistsException;
 import com.valoms.vakomstraineespringboot.exception.NotExistsException;
 import com.valoms.vakomstraineespringboot.model.User;
+import com.valoms.vakomstraineespringboot.model.mapper.DTOConvertor;
 import com.valoms.vakomstraineespringboot.repository.UserRepository;
 import com.valoms.vakomstraineespringboot.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -23,10 +24,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final DTOConvertor dtoConvertor;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, DTOConvertor dtoConvertor) {
         this.userRepository = userRepository;
+        this.dtoConvertor = dtoConvertor;
     }
 
     @Override
@@ -35,7 +38,11 @@ public class UserServiceImpl implements UserService {
             throw new NotExistsException("User not exist");
         });
         UserProfileResponse userResponse = new UserProfileResponse();
+/*
         BeanUtils.copyProperties(user, userResponse);
+*/
+
+        userResponse =  dtoConvertor.convertToDto(user,UserProfileResponse.class);
         return ResponseEntity.ok(userResponse);
     }
 

@@ -1,6 +1,7 @@
 package com.valoms.vakomstraineespringboot.model;
 
 
+import com.valoms.vakomstraineespringboot.model.mapper.Convertable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "user_post_like", schema = "public", catalog = "vakomtrainee")
-public class Like {
+public class Like implements Convertable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

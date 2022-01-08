@@ -1,5 +1,6 @@
 package com.valoms.vakomstraineespringboot.model;
 
+import com.valoms.vakomstraineespringboot.model.mapper.Convertable;
 import com.valoms.vakomstraineespringboot.type.PostgreSQLEnumType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,7 @@ import java.util.List;
         name = "pgsql_enum",
         typeClass = PostgreSQLEnumType.class
 )
-public class User {
+public class User implements Convertable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

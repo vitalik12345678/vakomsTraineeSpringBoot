@@ -1,6 +1,8 @@
 package com.valoms.vakomstraineespringboot.controller;
 
 import com.valoms.vakomstraineespringboot.dto.post.PostCreateRequest;
+import com.valoms.vakomstraineespringboot.dto.post.PostDeleteResponse;
+import com.valoms.vakomstraineespringboot.dto.post.PostLocationResponse;
 import com.valoms.vakomstraineespringboot.dto.post.PostProfileResponse;
 import com.valoms.vakomstraineespringboot.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +22,24 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("all")
-    public List<ResponseEntity<PostProfileResponse>> getAllPost() {
-        return null;
+    @GetMapping("v1/all")
+    public ResponseEntity<List<PostProfileResponse>> getAllPost() {
+        return postService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("v1/{id}")
     public ResponseEntity<PostProfileResponse> getPost(@PathVariable("id") Long id) {
-        return null;
+        return postService.getById(id);
     }
 
-    @PostMapping("")
+    @PostMapping("v1/")
     public ResponseEntity<PostProfileResponse> createPost(@RequestBody PostCreateRequest postCreateRequest) {
         return postService.create(postCreateRequest);
     }
+
+    @DeleteMapping("v1/{id}")
+    public ResponseEntity<PostDeleteResponse> deletePost(@PathVariable("id") Long id){
+        return postService.delete(id);
+    }
+
 }

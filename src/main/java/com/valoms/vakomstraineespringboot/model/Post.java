@@ -2,6 +2,7 @@ package com.valoms.vakomstraineespringboot.model;
 
 
 
+import com.valoms.vakomstraineespringboot.model.mapper.Convertable;
 import com.valoms.vakomstraineespringboot.type.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "post", schema = "public", catalog = "vakomtrainee")
-public class Post {
+public class Post implements Convertable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

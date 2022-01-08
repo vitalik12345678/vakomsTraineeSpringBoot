@@ -1,6 +1,9 @@
 package com.valoms.vakomstraineespringboot.type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.valoms.vakomstraineespringboot.model.LocationJSON;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -13,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonType implements UserType {
 
     @Override
@@ -38,7 +42,6 @@ public class JsonType implements UserType {
     @Override
     public Object deepCopy(Object o) throws HibernateException {
         try {
-            // use serialization to create a deep copy
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
             oos.writeObject(o);
@@ -84,6 +87,7 @@ public class JsonType implements UserType {
         }
         try {
             final ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             return mapper.readValue(cellContent.getBytes("UTF-8"), returnedClass());
         } catch (final Exception ex) {
             throw new RuntimeException("Failed to convert String to Invoice: " + ex.getMessage(), ex);
