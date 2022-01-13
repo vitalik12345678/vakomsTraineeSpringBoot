@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class FollowingsFollowersProfileResponse {
 
-    private String username;
-    private String phoneNumber;
+    private String usernameFollower;
+    private String usernameFollowing;
 
 }

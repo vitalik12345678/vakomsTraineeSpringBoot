@@ -37,7 +37,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostProfileResponse>> getAll() {
-
         List<Post> postList = postRepository.findAll();
         List<PostProfileResponse> profileList = new ArrayList<>();
         postList.forEach( x -> {
@@ -65,10 +64,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<PostProfileResponse> getById(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> {
-                    throw new NotExistsException("Post doesn't exists");
-                });
+        Post post = findPost(id);
         User user = userRepository.getById(post.getUser().getId());
         PostProfileResponse profileResponse = new PostProfileResponse();
         profileResponse.setUsername(user.getUsername());
@@ -78,11 +74,16 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<PostDeleteResponse> delete(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->{
-            throw new NotExistsException("Post doesn't exists");
-                });
+        Post post = findPost(id);
         PostDeleteResponse postDeleteResponse = new PostDeleteResponse();
         BeanUtils.copyProperties(post,postDeleteResponse);
         return ResponseEntity.ok(postDeleteResponse);
+    }
+
+    private Post findPost(Long id){
+       return postRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotExistsException("Post doesn't exists");
+                });
     }
 }

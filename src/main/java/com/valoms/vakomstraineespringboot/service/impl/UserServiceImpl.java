@@ -34,9 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserProfileResponse> getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            throw new NotExistsException("User not exist");
-        });
+        User user = findUser(id);
         UserProfileResponse userResponse = new UserProfileResponse();
 /*
         BeanUtils.copyProperties(user, userResponse);
@@ -78,9 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserProfileResponse> delete(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            throw new NotExistsException("User not exist");
-        });
+        User user = findUser(id);
         userRepository.delete(user);
         UserProfileResponse userProfileResponse = new UserProfileResponse();
         BeanUtils.copyProperties(user, userProfileResponse);
@@ -99,5 +95,10 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(userProfileResponseList);
     }
 
+    private User findUser(Long id){
+      return userRepository.findById(id).orElseThrow(() -> {
+            throw new NotExistsException("User not exist");
+        });
+    }
 
 }

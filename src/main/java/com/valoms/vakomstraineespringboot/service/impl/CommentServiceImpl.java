@@ -38,17 +38,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public ResponseEntity<CommentProfileResponse> create(CommentCreateRequest commentCreateRequest) {
-
-        User user = userRepository.findById(commentCreateRequest.getUserId())
-                .orElseThrow( () -> {
-                   throw new NotExistsException("User doesn't exist");
-                });
-
-        Post post = postRepository.findById(commentCreateRequest.getPostId()).orElseThrow(
-                () -> {
-                    throw new NotExistsException("Post doesn't exist");
-                });
-
+        User user = findUser(commentCreateRequest.getUserId());
+        Post post = findPost(commentCreateRequest.getPostId());
         Comment comment = new Comment();
         comment.setDescription(commentCreateRequest.getDescription());
         comment.setPostComment(post);
@@ -60,11 +51,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public ResponseEntity<CommentProfileResponse> delete(Long id) {
-
-        Comment comment= commentRepository.findById(id)
-                .orElseThrow(() -> {
-            throw new NotExistsException("Comment doesn't exist");
-        });
+        Comment comment = findComment(id);
         commentRepository.delete(comment);
         CommentProfileResponse commentProfileResponse = createProfileResponse(comment.getUserComment(),comment.getPostComment(),comment.getDescription());
         return ResponseEntity.ok(commentProfileResponse);
@@ -72,10 +59,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public ResponseEntity<CommentProfileResponse> getById(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> {
-                    throw new NotExistsException("Comment doesn't exist");
-                });
+        Comment comment = findComment(id);
         CommentProfileResponse commentProfileResponse = createProfileResponse(comment.getUserComment(),comment.getPostComment(),comment.getDescription());
         return ResponseEntity.ok(commentProfileResponse);
     }
@@ -95,9 +79,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public ResponseEntity<List<CommentProfileResponse>> getByPostId(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(()->{
-            throw new NotExistsException("Post doesn't exist");
-        });
+        Post post = findPost(id);
         List<Comment> commentList = commentRepository.findByPostComment(post);
         List<CommentProfileResponse> responseList = new ArrayList<>();
         commentList.forEach( x -> {
@@ -112,5 +94,26 @@ public class CommentServiceImpl implements CommentService {
         commentResponse.setUsername(user.getUsername());
         commentResponse.setPostname(post.getTitle());
         return commentResponse;
+    }
+
+    private Comment findComment(Long id){
+       return commentRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotExistsException("Comment doesn't exist");
+                });
+    }
+
+    private Post findPost(Long id){
+        return  postRepository.findById(id).orElseThrow(
+                () -> {
+                    throw new NotExistsException("Post doesn't exist");
+                });
+    }
+
+    private User findUser(Long id){
+        return userRepository.findById(id)
+                .orElseThrow( () -> {
+                    throw new NotExistsException("User doesn't exist");
+                });
     }
 }

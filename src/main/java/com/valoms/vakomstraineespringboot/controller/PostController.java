@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class PostController {
     }
 
     @PostMapping("v1/")
-    public ResponseEntity<PostProfileResponse> createPost(@RequestBody PostCreateRequest postCreateRequest) {
+    public ResponseEntity<PostProfileResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
         return postService.create(postCreateRequest);
     }
 
