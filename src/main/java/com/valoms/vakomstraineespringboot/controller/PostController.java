@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/post/")
+@CrossOrigin("*")
 public class PostController {
 
     private final PostService postService;
@@ -31,6 +32,11 @@ public class PostController {
     @GetMapping("v1/{id}")
     public ResponseEntity<PostProfileResponse> getPost(@PathVariable("id") Long id) {
         return postService.getById(id);
+    }
+
+    @GetMapping("v1/myposts/{id}")
+    public ResponseEntity<List<PostProfileResponse>> getMyPost(@PathVariable("id")Long id){
+        return postService.getMyPosts(id);
     }
 
     @PostMapping("v1/")

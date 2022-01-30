@@ -17,4 +17,6 @@ public interface PostService {
 
     ResponseEntity<PostDeleteResponse> delete(Long id);
 
+    ResponseEntity<List<PostProfileResponse>> getMyPosts(Long userId);
+
 }

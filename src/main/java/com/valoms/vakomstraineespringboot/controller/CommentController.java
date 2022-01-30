@@ -1,6 +1,7 @@
 package com.valoms.vakomstraineespringboot.controller;
 
 import com.valoms.vakomstraineespringboot.dto.comment.CommentCreateRequest;
+import com.valoms.vakomstraineespringboot.dto.comment.CommentDeleteRequest;
 import com.valoms.vakomstraineespringboot.dto.comment.CommentProfileResponse;
 import com.valoms.vakomstraineespringboot.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/comment/")
+@CrossOrigin("*")
 public class CommentController {
 
     private final CommentService commentService;
@@ -29,8 +31,8 @@ public class CommentController {
     }
 
     @DeleteMapping("v1/{id}")
-    public ResponseEntity<CommentProfileResponse> delete(@PathVariable("id")Long id){
-        return commentService.delete(id);
+    public ResponseEntity<CommentProfileResponse> delete(@RequestBody CommentDeleteRequest commentDeleteRequest){
+        return commentService.delete(commentDeleteRequest);
     }
 
     @GetMapping("v1/{id}")

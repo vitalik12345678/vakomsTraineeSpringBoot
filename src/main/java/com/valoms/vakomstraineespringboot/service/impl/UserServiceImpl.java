@@ -35,12 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserProfileResponse> getUserById(Long id) {
         User user = findUser(id);
-        UserProfileResponse userResponse = new UserProfileResponse();
-/*
-        BeanUtils.copyProperties(user, userResponse);
-*/
-
-        userResponse =  dtoConvertor.convertToDto(user,UserProfileResponse.class);
+        UserProfileResponse userResponse =  dtoConvertor.convertToDto(user,UserProfileResponse.class);
         return ResponseEntity.ok(userResponse);
     }
 
@@ -60,18 +55,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserProfileResponse> update(UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<UserProfileResponse> update(UserUpdateRequest userUpdateRequest, Long id) {
+
+        User currentUser = findUser(id);
         Optional<User> optionalUser = userRepository.takeByUniqueValue(userUpdateRequest.getEmail(), userUpdateRequest.getPhoneNumber());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        if(optionalUser.isPresent()){
+            throw new ExistsException("User with such email or phone number already exist");
+        }else {
             UserProfileResponse userProfileResponse = new UserProfileResponse();
-            BeanUtils.copyProperties(userUpdateRequest, user);
-            userRepository.save(user);
-            BeanUtils.copyProperties(user, userProfileResponse);
+            BeanUtils.copyProperties(userUpdateRequest, currentUser);
+            BeanUtils.copyProperties(currentUser, userProfileResponse);
+            userRepository.save(currentUser);
             return ResponseEntity.ok(userProfileResponse);
-        } else {
-            throw new NotExistsException("user with such email or phone number doesn't exists");
         }
+
     }
 
     @Override

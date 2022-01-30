@@ -11,5 +11,5 @@ public interface LikeService {
 
     ResponseEntity<Long> likeCounts(Long id);
 
-
+    ResponseEntity<Boolean> delete(LikeCreateRequest likeCreateRequest);
 }

@@ -1,6 +1,7 @@
 package com.valoms.vakomstraineespringboot.service.impl;
 
 import com.valoms.vakomstraineespringboot.dto.comment.CommentCreateRequest;
+import com.valoms.vakomstraineespringboot.dto.comment.CommentDeleteRequest;
 import com.valoms.vakomstraineespringboot.dto.comment.CommentProfileResponse;
 import com.valoms.vakomstraineespringboot.exception.NotExistsException;
 import com.valoms.vakomstraineespringboot.model.Comment;
@@ -50,8 +51,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<CommentProfileResponse> delete(Long id) {
-        Comment comment = findComment(id);
+    public ResponseEntity<CommentProfileResponse> delete(CommentDeleteRequest commentDeleteRequest) {
+        User user = findUser(commentDeleteRequest.getUserId());
+        Post post = findPost(commentDeleteRequest.getPostId());
+        Comment comment = commentRepository.findByUserCommentAndPostComment(user,post)
+                .orElseThrow( () ->{
+                    throw new NotExistsException("You are not writing a comment");
+                });
         commentRepository.delete(comment);
         CommentProfileResponse commentProfileResponse = createProfileResponse(comment.getUserComment(),comment.getPostComment(),comment.getDescription());
         return ResponseEntity.ok(commentProfileResponse);

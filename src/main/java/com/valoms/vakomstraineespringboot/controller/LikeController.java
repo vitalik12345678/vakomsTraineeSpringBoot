@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/like/")
+@CrossOrigin("*")
 public class LikeController {
 
     private final LikeService likeService;
@@ -30,6 +31,12 @@ public class LikeController {
     @GetMapping("v1/{id}")
     private ResponseEntity<Long> getCountOfLikes(@PathVariable("id") Long id){
         return likeService.likeCounts(id);
+    }
+
+    @DeleteMapping("v1/")
+    private ResponseEntity<Boolean> delete(@RequestBody @Valid
+                                           LikeCreateRequest likeCreateRequest){
+        return likeService.delete(likeCreateRequest);
     }
 
 }

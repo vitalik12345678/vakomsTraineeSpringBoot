@@ -37,14 +37,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostProfileResponse>> getAll() {
-        List<Post> postList = postRepository.findAll();
-        List<PostProfileResponse> profileList = new ArrayList<>();
-        postList.forEach( x -> {
-            PostProfileResponse profileResponse = new PostProfileResponse();
-            BeanUtils.copyProperties(x,profileResponse);
-            profileList.add(profileResponse);
-        });
-        return ResponseEntity.ok(profileList);
+        return getListProfileResponse(postRepository.findAll());
     }
 
     @Override
@@ -77,7 +70,28 @@ public class PostServiceImpl implements PostService {
         Post post = findPost(id);
         PostDeleteResponse postDeleteResponse = new PostDeleteResponse();
         BeanUtils.copyProperties(post,postDeleteResponse);
+        postRepository.delete(post);
         return ResponseEntity.ok(postDeleteResponse);
+    }
+
+    @Override
+    public ResponseEntity<List<PostProfileResponse>> getMyPosts(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow( () ->{
+           throw new NotExistsException("User doesn't exist");
+        });
+        List<Post> postList = postRepository.findByUser(user);
+        return getListProfileResponse(postList);
+    }
+
+    private ResponseEntity<List<PostProfileResponse>> getListProfileResponse(List<Post> postList) {
+        List<PostProfileResponse> profileList = new ArrayList<>();
+        postList.forEach( x -> {
+            PostProfileResponse profileResponse = new PostProfileResponse();
+            BeanUtils.copyProperties(x,profileResponse);
+            profileResponse.setUsername(x.getUser().getUsername());
+            profileList.add(profileResponse);
+        });
+        return ResponseEntity.ok(profileList);
     }
 
     private Post findPost(Long id){

@@ -13,7 +13,7 @@ public interface UserService {
 
     ResponseEntity<UserProfileResponse> create(UserCreateRequest userCreateRequest);
 
-    ResponseEntity<UserProfileResponse> update(UserUpdateRequest userUpdateRequest);
+    ResponseEntity<UserProfileResponse> update(UserUpdateRequest userUpdateRequest,Long id);
 
     ResponseEntity<UserProfileResponse> delete(Long id);
 

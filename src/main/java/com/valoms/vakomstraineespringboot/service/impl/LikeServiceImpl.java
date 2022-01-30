@@ -39,10 +39,7 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public ResponseEntity<LikeProfileResponse> create(LikeCreateRequest likeCreateRequest) {
 
-        User user = userRepository.findById(likeCreateRequest.getUserId())
-                .orElseThrow(() -> {
-                    throw new NotExistsException("User doesn't exist");
-                });
+        User user = findUser(likeCreateRequest.getUserId());
 
         Post post = findPost(likeCreateRequest.getPostId());
 
@@ -69,6 +66,23 @@ public class LikeServiceImpl implements LikeService {
         return ResponseEntity.ok(count);
     }
 
+    @Override
+    public ResponseEntity<Boolean> delete(LikeCreateRequest likeCreateRequest) {
+
+        User user = findUser(likeCreateRequest.getUserId());
+
+        Post post = findPost(likeCreateRequest.getPostId());
+
+        Optional<Like> optionalLike = likeRepository.checkOnLike(user, post);
+
+        if (optionalLike.isPresent()){
+            likeRepository.delete(optionalLike.get());
+            return ResponseEntity.ok(true);
+        }else {
+            throw new NotExistsException("You dont like post");
+        }
+    }
+
     private Post findPost(Long id){
        return postRepository.findById(id)
                 .orElseThrow(() -> {
@@ -76,4 +90,10 @@ public class LikeServiceImpl implements LikeService {
                 });
     }
 
+    private User findUser(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> {
+                    throw new NotExistsException("User doesn't exist");
+                });
+    }
 }

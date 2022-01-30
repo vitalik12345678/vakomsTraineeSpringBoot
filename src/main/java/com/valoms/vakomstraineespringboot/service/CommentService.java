@@ -1,6 +1,7 @@
 package com.valoms.vakomstraineespringboot.service;
 
 import com.valoms.vakomstraineespringboot.dto.comment.CommentCreateRequest;
+import com.valoms.vakomstraineespringboot.dto.comment.CommentDeleteRequest;
 import com.valoms.vakomstraineespringboot.dto.comment.CommentProfileResponse;
 import org.apache.catalina.LifecycleState;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ public interface CommentService {
 
     ResponseEntity<CommentProfileResponse> create(CommentCreateRequest commentCreateRequest);
 
-    ResponseEntity<CommentProfileResponse> delete(Long id);
+    ResponseEntity<CommentProfileResponse> delete(CommentDeleteRequest commentDeleteRequest);
 
     ResponseEntity<CommentProfileResponse> getById(Long id);
 

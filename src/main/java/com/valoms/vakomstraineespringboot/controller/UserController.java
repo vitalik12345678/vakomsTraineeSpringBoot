@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/user/")
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
@@ -37,9 +38,9 @@ public class UserController {
         return userService.create(userCreateRequest);
     }
 
-    @PutMapping("v1/")
-    public ResponseEntity<UserProfileResponse> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userService.update(userUpdateRequest);
+    @PutMapping("v1/{id}")
+    public ResponseEntity<UserProfileResponse> updateUser(@PathVariable("id")Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        return userService.update(userUpdateRequest,id);
     }
 
 
